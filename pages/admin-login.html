@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Monojit Sarkar Classes</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .social-media {
+            margin-bottom: 1rem;
+        }
+        .social-media a {
+            display: inline-block;
+            margin: 0 0.5rem;
+        }
+        .social-media a[aria-label="Facebook"] svg {
+            fill: #FFFFFF;
+        }
+        .social-media a[aria-label="Instagram"] svg {
+            fill: #C13584;
+        }
+        .social-media a[aria-label="YouTube"] svg {
+            fill: #FF0000;
+        }
+        .social-media a:hover svg {
+            filter: brightness(1.2);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <a href="../index.html">MONOJIT SARKAR CLASSES</a>
+            </div>
+            <nav class="main-nav">
+                <button class="nav-toggle" aria-label="toggle navigation">
+                    <span class="hamburger"></span>
+                </button>
+                <ul class="nav-links">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="courses.html">Courses</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="login-section">
+            <div class="container">
+                <div class="login-box">
+                    <h2>Admin Login</h2>
+                    <form id="admin-login-form">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="social-media">
+                <a href="#" target="_blank" aria-label="Facebook">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm3 8h-1.35c-.538 0-.65.221-.65.778v1.222h2l-.209 2h-1.791v7h-3v-7h-2v-2h2v-2.5c0-1.654 1.119-2.5 2.75-2.5h1.25v2z"/></svg>
+                </a>
+                <a href="#" target="_blank" aria-label="Instagram">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 2c5.523 0 10 4.477 10 10s-4.477 10-10 10-10-4.477-10-10 4.477-10 10-10zm0 2c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zm0 2c3.314 0 6 2.686 6 6s-2.686 6-6 6-6-2.686-6-6 2.686-6 6-6zm0 2c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm6-3h-1v1h1v-1z"/></svg>
+                </a>
+                <a href="https://www.youtube.com/@monojitsarkarclasses" target="_blank" aria-label="YouTube">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.942 16.226c-.243.63-.773 1.11-1.473 1.282-1.262.331-6.473.331-6.473.331s-5.211 0-6.473-.331c-.7-.172-1.23-.652-1.473-1.282-.34-1.14-.34-3.553-.34-3.553s0-2.413.34-3.553c.243-.63.773-1.11 1.473-1.282 1.262-.331 6.473-.331 6.473-.331s5.211 0 6.473.331c.7.172 1.23.652 1.473 1.282.34 1.14.34 3.553.34 3.553s0 2.413-.34 3.553zm-7.942-8.226v5l4-2.5-4-2.5z"/></svg>
+                </a>
+            </div>
+            <p>&copy; 2025 Monojit Sarkar Classes. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script>
+        document.getElementById('admin-login-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    window.location.href = 'admin.html';
+                } else {
+                    alert(result.error || 'Invalid username or password.');
+                }
+            } catch (error) {
+                console.error('Error logging in:', error);
+                alert('An error occurred. Please try again later.');
+            }
+        });
+    </script>
+</body>
+</html>

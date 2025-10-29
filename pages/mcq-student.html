@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fill MCQs - Monojit Sarkar Classes</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .mcq-container {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .mcq-question {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .mcq-options label {
+            display: block;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+        .mcq-options input[type="radio"] {
+            margin-right: 10px;
+        }
+        .student-details {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .student-details .form-group {
+            margin-bottom: 15px;
+        }
+        .student-details label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .student-details input[type="text"],
+        .student-details input[type="tel"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <a href="../index.html">MONOJIT SARKAR CLASSES</a>
+            </div>
+            <nav class="main-nav">
+                <ul class="nav-links">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="courses.html">Courses</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="mcq-filling-section">
+            <div class="container">
+                <h2>Attempt MCQs</h2>
+                <form id="student-mcq-form">
+                    <div id="mcq-questions-container">
+                        <!-- MCQs will be loaded here -->
+                        <p>Loading MCQs...</p>
+                    </div>
+
+                    <div class="student-details">
+                        <h3>Your Details</h3>
+                        <div class="form-group">
+                            <label for="student-name">Your Name <span style="color: red;">*</span></label>
+                            <input type="text" id="student-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="student-phone">Phone Number</label>
+                            <input type="tel" id="student-phone">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit Answers</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2025 Monojit Sarkar Classes. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../js/db-utils.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const mcqQuestionsContainer = document.getElementById('mcq-questions-container');
+            const mcqs = await getMcqs();
+
+            if (mcqs.length === 0) {
+                mcqQuestionsContainer.innerHTML = '<p>No MCQs available at the moment. Please check back later.</p>';
+                return;
+            }
+
+            mcqQuestionsContainer.innerHTML = ''; // Clear loading message
+
+            mcqs.forEach((mcq, index) => {
+                const mcqDiv = document.createElement('div');
+                mcqDiv.classList.add('mcq-container');
+                mcqDiv.innerHTML = `
+                    <p class="mcq-question">${index + 1}. ${mcq.question}</p>
+                    <div class="mcq-options">
+                        <label>
+                            <input type="radio" name="mcq-${mcq.id}" value="a"> A. ${mcq.options.a}
+                        </label>
+                        <label>
+                            <input type="radio" name="mcq-${mcq.id}" value="b"> B. ${mcq.options.b}
+                        </label>
+                        <label>
+                            <input type="radio" name="mcq-${mcq.id}" value="c"> C. ${mcq.options.c}
+                        </label>
+                        <label>
+                            <input type="radio" name="mcq-${mcq.id}" value="d"> D. ${mcq.options.d}
+                        </label>
+                    </div>
+                `;
+                mcqQuestionsContainer.appendChild(mcqDiv);
+            });
+        });
+
+        document.getElementById('student-mcq-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const studentName = document.getElementById('student-name').value;
+            const studentPhone = document.getElementById('student-phone').value;
+
+            if (!studentName) {
+                alert('Student Name is mandatory to submit MCQs.');
+                return;
+            }
+
+            const mcqs = await getMcqs();
+            const studentAnswers = [];
+
+            mcqs.forEach(mcq => {
+                const selectedOption = document.querySelector(`input[name="mcq-${mcq.id}"]:checked`);
+                studentAnswers.push({
+                    mcqId: mcq.id,
+                    question: mcq.question,
+                    selectedAnswer: selectedOption ? selectedOption.value : null,
+                    correctAnswer: mcq.correctAnswer
+                });
+            });
+
+            const submission = {
+                timestamp: new Date().toISOString(),
+                studentName,
+                studentPhone,
+                answers: studentAnswers
+            };
+
+            await addStudentSubmission(submission);
+            alert('Your MCQ answers have been submitted!');
+            this.reset();
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Monojit Sarkar Classes</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <a href="../index.html">MONOJIT SARKAR CLASSES</a>
+            </div>
+            <nav class="main-nav">
+                <ul class="nav-links">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="courses.html">Courses</a></li>
+                    <li><a href="mcq.html">MCQ</a></li>
+                    <li><a href="#" id="logout-btn">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Admin Dashboard</h1>
+
+            <section id="courses-section">
+                <h2>Manage Courses</h2>
+                <form id="course-form">
+                    <input type="hidden" id="course-id">
+                    <input type="text" id="course-title" placeholder="Course Title" required>
+                    <textarea id="course-description" placeholder="Course Description" required></textarea>
+                    <button type="submit" class="btn btn-primary">Save Course</button>
+                </form>
+                <div id="courses-list"></div>
+            </section>
+
+            <section id="mcqs-section">
+                <h2>Manage MCQs</h2>
+                <form id="mcq-form">
+                    <input type="hidden" id="mcq-id">
+                    <textarea id="mcq-question" placeholder="Question" required></textarea>
+                    <input type="text" id="mcq-option-a" placeholder="Option A" required>
+                    <input type="text" id="mcq-option-b" placeholder="Option B" required>
+                    <input type="text" id="mcq-option-c" placeholder="Option C" required>
+                    <input type="text" id="mcq-option-d" placeholder="Option D" required>
+                    <select id="mcq-correct-answer" required>
+                        <option value="">Select Correct Answer</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Save MCQ</button>
+                </form>
+                <div id="mcqs-list"></div>
+            </section>
+
+            <section id="submissions-section">
+                <h2>Student Submissions</h2>
+                <div id="submissions-list"></div>
+            </section>
+
+            <section id="contact-messages-section">
+                <h2>Contact Messages</h2>
+                <div id="contact-messages-list"></div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; <span id="year"></span> Monojit Sarkar Classes. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../js/admin.js"></script>
+</body>
+</html>

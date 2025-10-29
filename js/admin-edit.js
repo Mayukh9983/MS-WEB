@@ -1,0 +1,1 @@
+alert('Admin edit mode enabled!');

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login - Monojit Sarkar Classes</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .social-media {
+            margin-bottom: 1rem;
+        }
+        .social-media a {
+            display: inline-block;
+            margin: 0 0.5rem;
+        }
+        .social-media a[aria-label="Facebook"] svg {
+            fill: #FFFFFF;
+        }
+        .social-media a[aria-label="Instagram"] svg {
+            fill: #C13584;
+        }
+        .social-media a[aria-label="YouTube"] svg {
+            fill: #FF0000;
+        }
+        .social-media a:hover svg {
+            filter: brightness(1.2);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <a href="../index.html">MONOJIT SARKAR CLASSES</a>
+            </div>
+            <nav class="main-nav">
+                <button class="nav-toggle" aria-label="toggle navigation">
+                    <span class="hamburger"></span>
+                </button>
+                <ul class="nav-links">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="courses.html">Courses</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="mcq.html">MCQs</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="login-section">
+            <div class="container">
+                <div class="login-box">
+                    <h2>Student Login</h2>
+                    <form id="student-login-form">
+                        <div class="form-group">
+                            <label for="username">Username or Email</label>
+                            <input type="text" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2025 Monojit Sarkar Classes. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

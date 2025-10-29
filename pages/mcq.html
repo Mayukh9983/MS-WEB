@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQs - Monojit Sarkar Classes</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .social-media {
+            margin-bottom: 1rem;
+        }
+        .social-media a {
+            display: inline-block;
+            margin: 0 0.5rem;
+        }
+        .social-media a[aria-label="Facebook"] svg {
+            fill: #FFFFFF;
+        }
+        .social-media a[aria-label="Instagram"] svg {
+            fill: #C13584;
+        }
+        .social-media a[aria-label="YouTube"] svg {
+            fill: #FF0000;
+        }
+        .social-media a:hover svg {
+            filter: brightness(1.2);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <a href="../index.html">MONOJIT SARKAR CLASSES</a>
+            </div>
+            <nav class="main-nav">
+                <ul class="nav-links">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="courses.html">Courses</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="mcq.html">MCQs</a></li>
+                    <li class="dropdown">
+                        <a href="#">Login</a>
+                        <ul class="dropdown-content">
+                            <li><a href="admin-login.html">Admin Login</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>Multiple Choice Questions</h1>
+                <p>Test your knowledge with our collection of MCQs.</p>
+            </div>
+        </section>
+
+        <section class="mcq-list">
+            <div class="container" id="mcq-container">
+                <!-- MCQs will be loaded here -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2025 Monojit Sarkar Classes. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const mcqContainer = document.getElementById('mcq-container');
+        const mcqs = JSON.parse(localStorage.getItem('mcqs')) || [];
+
+        if (mcqs.length === 0) {
+            mcqContainer.innerHTML = '<p>No MCQs available at the moment. Please check back later.</p>';
+        } else {
+            mcqs.forEach((mcq, index) => {
+                const mcqElement = document.createElement('article');
+                mcqElement.classList.add('mcq-item');
+                mcqElement.innerHTML = `
+                    <h3>Question ${index + 1}:</h3>
+                    <p>${mcq.question}</p>
+                    <ul class="mcq-options">
+                        <li>A) ${mcq.options.a}</li>
+                        <li>B) ${mcq.options.b}</li>
+                        <li>C) ${mcq.options.c}</li>
+                        <li>D) ${mcq.options.d}</li>
+                    </ul>
+                    <button class="btn btn-secondary show-answer-btn">Show Answer</button>
+                    <p class="mcq-answer" style="display: none;">Correct Answer: ${mcq.correctAnswer.toUpperCase()}</p>
+                `;
+                mcqContainer.appendChild(mcqElement);
+            });
+
+            const showAnswerBtns = document.querySelectorAll('.show-answer-btn');
+            showAnswerBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const answer = btn.nextElementSibling;
+                    if (answer.style.display === 'none') {
+                        answer.style.display = 'block';
+                        btn.textContent = 'Hide Answer';
+                    } else {
+                        answer.style.display = 'none';
+                        btn.textContent = 'Show Answer';
+                    }
+                });
+            });
+        }
+    </script>
+
+    <script>
+        if (sessionStorage.getItem('isAdmin') === 'true') {
+            const editButton = document.createElement('button');
+            editButton.textContent = 'Edit Page';
+            editButton.style.position = 'fixed';
+            editButton.style.bottom = '20px';
+            editButton.style.left = '20px';
+            editButton.style.zIndex = '1000';
+            editButton.classList.add('btn', 'btn-secondary');
+            editButton.onclick = () => {
+                const adminScript = document.createElement('script');
+                adminScript.src = '../js/admin-edit.js';
+                document.body.appendChild(adminScript);
+                editButton.remove();
+            };
+            document.body.appendChild(editButton);
+        }
+    </script>
+</html>

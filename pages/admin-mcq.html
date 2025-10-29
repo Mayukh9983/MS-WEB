@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage MCQs - Monojit Sarkar Classes</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .social-media {
+            margin-bottom: 1rem;
+        }
+        .social-media a {
+            display: inline-block;
+            margin: 0 0.5rem;
+        }
+        .social-media a[aria-label="Facebook"] svg {
+            fill: #FFFFFF;
+        }
+        .social-media a[aria-label="Instagram"] svg {
+            fill: #C13584;
+        }
+        .social-media a[aria-label="YouTube"] svg {
+            fill: #FF0000;
+        }
+        .social-media a:hover svg {
+            filter: brightness(1.2);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <a href="../index.html">MONOJIT SARKAR CLASSES</a>
+            </div>
+            <nav class="main-nav">
+                <ul class="nav-links">
+                    <li><a href="admin.html">Admin Dashboard</a></li>
+                    <li><a href="#" id="logout-link">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="admin-mcq">
+            <div class="container">
+                <h2>Manage MCQs</h2>
+                <form id="mcq-form">
+                    <div class="form-group">
+                        <label for="mcq-question">Question</label>
+                        <textarea id="mcq-question" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="mcq-option-a">Option A</label>
+                        <input type="text" id="mcq-option-a" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mcq-option-b">Option B</label>
+                        <input type="text" id="mcq-option-b" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mcq-option-c">Option C</label>
+                        <input type="text" id="mcq-option-c" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mcq-option-d">Option D</label>
+                        <input type="text" id="mcq-option-d" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mcq-correct-answer">Correct Answer</label>
+                        <select id="mcq-correct-answer" required>
+                            <option value="a">A</option>
+                            <option value="b">B</option>
+                            <option value="c">C</option>
+                            <option value="d">D</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add MCQ</button>
+                </form>
+
+                <div class="mcq-list" id="mcq-list">
+                    <h3>Existing MCQs</h3>
+                    <!-- MCQs will be loaded here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2025 Monojit Sarkar Classes. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../js/db-utils.js"></script>
+    <script>
+        document.getElementById('logout-link').addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'admin-login.html';
+        });
+
+        async function loadMcqs() {
+            const mcqs = await getMcqs();
+            const mcqListDiv = document.getElementById('mcq-list');
+            mcqListDiv.innerHTML = '<h3>Existing MCQs</h3>'; // Clear previous list
+
+            if (mcqs.length === 0) {
+                mcqListDiv.innerHTML += '<p>No MCQs added yet.</p>';
+                return;
+            }
+
+            mcqs.forEach(mcq => {
+                const mcqItem = document.createElement('div');
+                mcqItem.classList.add('mcq-item');
+                mcqItem.innerHTML = `
+                    <p><strong>Q:</strong> ${mcq.question}</p>
+                    <ul>
+                        <li>A: ${mcq.options.a}</li>
+                        <li>B: ${mcq.options.b}</li>
+                        <li>C: ${mcq.options.c}</li>
+                        <li>D: ${mcq.options.d}</li>
+                    </ul>
+                    <p><strong>Correct Answer:</strong> ${mcq.correctAnswer.toUpperCase()}</p>
+                    <button class="btn btn-danger delete-mcq-btn" data-id="${mcq.id}">Delete</button>
+                    <hr>
+                `;
+                mcqListDiv.appendChild(mcqItem);
+            });
+
+            // Add event listeners for delete buttons
+            document.querySelectorAll('.delete-mcq-btn').forEach(button => {
+                button.addEventListener('click', async (event) => {
+                    const mcqId = parseInt(event.target.dataset.id);
+                    if (confirm('Are you sure you want to delete this MCQ?')) {
+                        await deleteMcq(mcqId);
+                        alert('MCQ deleted successfully!');
+                        loadMcqs(); // Reload MCQs after deletion
+                    }
+                });
+            });
+        }
+
+        document.getElementById('mcq-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const mcq = {
+                question: document.getElementById('mcq-question').value,
+                options: {
+                    a: document.getElementById('mcq-option-a').value,
+                    b: document.getElementById('mcq-option-b').value,
+                    c: document.getElementById('mcq-option-c').value,
+                    d: document.getElementById('mcq-option-d').value,
+                },
+                correctAnswer: document.getElementById('mcq-correct-answer').value
+            };
+
+            await addMcq(mcq);
+
+            alert('MCQ added successfully!');
+            this.reset();
+            loadMcqs(); // Reload MCQs after adding a new one
+        });
+
+        // Load MCQs when the page loads
+        document.addEventListener('DOMContentLoaded', loadMcqs);
+    </script>
+
+</body>
+</html>
