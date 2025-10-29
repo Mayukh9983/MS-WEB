@@ -16,32 +16,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 2. Simple Scroll Animations
-    const sectionsToAnimate = document.querySelectorAll('section');
-
-    const observerOptions = {
-        root: null, // relative to the viewport
-        threshold: 0.1 // 10% of the item must be visible
-    };
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = 1;
-                entry.target.style.transform = 'translateY(0)';
-                observer.unobserve(entry.target); // Stop observing once animated
-            }
-        });
-    }, observerOptions);
-
-    sectionsToAnimate.forEach(section => {
-        // Set initial state for animation
-        section.style.opacity = 0;
-        section.style.transform = 'translateY(20px)';
-        section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-        observer.observe(section);
-    });
-
     // 3. Basic Client-Side Form Validation
     const contactForm = document.getElementById('contact-form');
 
